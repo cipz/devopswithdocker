@@ -600,3 +600,51 @@ in the [Dockerfile](1_11/Dockerfile), I rebuild the image and I run it with the 
 This is the response in the browser:
 
 ![](1_12/output.png)
+
+## 1.13
+
+Lets create a Dockerfile for a Java Spring project: [github page](https://github.com/docker-hy/spring-example-project).
+
+The setup should be straightforward with the README instructions. Tips to get you started:
+
+Use [openjdk image](https://hub.docker.com/_/openjdk) `FROM openjdk:_tag_` to get java instead of installing it manually. Pick the tag by using the README and dockerhub page.
+
+You’ve completed the exercise when you see a `‘Success’` message in your browser.
+
+## 1.14
+
+Lets create a Dockerfile for a rails project: [github page](https://github.com/docker-hy/rails-example-project).
+
+Again we can take a look at the README for the project to see the installation instructions. Tips to get you started:
+
+Use [Ruby image](https://hub.docker.com/_/ruby) `FROM ruby:_tag_` to easily get most of what you’ll need at the beginning. Pick the tag by using the README and dockerhub page.
+
+If you want you can make small edits to the program if you get stuck and google doesn’t help you configure the setup. If you did, explain the edits with your submission of the Dockerfile.
+
+You’ve completed the exercise when the application works in your browser.
+
+## 1.15
+
+Create Dockerfile for an application or any other dockerised project in any of your own repositories and publish it to Docker Hub. This can be any project except clones / forks of backend-example or frontend-example.
+
+For this exercise to be complete you have to provide the link to the project in docker hub, make sure you at least have a basic description and instructions for how to run the application in a [README](https://help.github.com/en/articles/about-readmes) that’s available through your submission.
+
+## 1.16
+
+Pushing to heroku happens in a similar way. A project has already been prepared at `devopsdockeruh/heroku-example` so lets pull that first. Note that the image of the project is quite large.
+
+Go to [https://www.heroku.com/](https://www.heroku.com/) and create a new app there and install heroku CLI. You can find additional instructions from Deploy tab under `Container Registry`. Tag the pulled image as `registry.heroku.com/_app_/_process-type_`, process-type can be web for this exercise. The app should be your project name in heroku.
+
+Then push the image to heroku with docker push `registry.heroku.com/_app_/web` and release it using the heroku CLI: `heroku container:release web` (you might need to login first: `heroku container:login`)
+
+For this exercise return the url in which the released application is.
+
+You could also use the heroku CLI to build and push, but since we didn’t want to build anything this time it was easier to just tag the image.
+
+## 1.17
+
+Create an image that contains your favorite programming environment in it’s entirety.
+
+This means that a computer that only has docker can use the image to start a container which contains all the tools and libraries. Excluding IDE / Editor. The environment can be partially used by running commands manually inside the container.
+
+Explain what you created and publish it to Docker Hub.
