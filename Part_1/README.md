@@ -93,4 +93,138 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ```
 
+## 1.3 Hello Docker Hub
 
+Start image `devopsdockeruh/pull_exercise` with flags `-it` like so: `docker run -it devopsdockeruh/pull_exercise`. It will wait for your input. Navigate through docker hub to find the docs and Dockerfile that was used to create the image.
+
+Read the Dockerfile and/or docs to learn what input will get the application to answer a “secret message”.
+
+Submit the secret message and command(s) given to get it as your answer.
+
+*Answer:*
+```
+ cip  ~  docker run -it devopsdockeruh/pull_exercise
+Unable to find image 'devopsdockeruh/pull_exercise:latest' locally
+latest: Pulling from devopsdockeruh/pull_exercise
+8e402f1a9c57: Pull complete 
+5e2195587d10: Pull complete 
+6f595b2fc66d: Pull complete 
+165f32bf4e94: Pull complete 
+67c4f504c224: Pull complete 
+Digest: sha256:7c0635934049afb9ca0481fb6a58b16100f990a0d62c8665b9cfb5c9ada8a99f
+Status: Downloaded newer image for devopsdockeruh/pull_exercise:latest
+Give me the password: basics
+You found the correct password. Secret message is:
+"This is the secret message"
+```
+## 1.4
+
+Now that we’ve warmed up it’s time to get inside a container while it’s running!
+
+Start image `devopsdockeruh/exec_bash_exercise`, it will start a container with clock-like features and create a log. Go inside the container and use `tail -f ./logs.txt` to follow the logs. Every 15 seconds the clock will send you a “secret message”.
+
+Submit the secret message and command(s) given as your answer.
+
+*Answer:*
+```
+ cip  ~  docker run -d --name exec_bash_exercise devopsdockeruh/exec_bash_exercise
+Unable to find image 'devopsdockeruh/exec_bash_exercise:latest' locally
+latest: Pulling from devopsdockeruh/exec_bash_exercise
+1c6172af85ee: Pull complete 
+b194b0e3c928: Pull complete 
+1f5ec00f35d5: Pull complete 
+93b1353672b6: Pull complete 
+3d7f38db3cca: Pull complete 
+21e102f9fe89: Pull complete 
+d851ffed797c: Pull complete 
+a45031e28c68: Pull complete 
+ca3c1414856f: Pull complete 
+02c74c9936fd: Pull complete 
+ddb55f8ab0a8: Pull complete 
+Digest: sha256:d38b6f6b0eed2880e25c9eb7f83f1cd016ffe3a56c9a3fec6e7bee480bf1ed0f
+Status: Downloaded newer image for devopsdockeruh/exec_bash_exercise:latest
+2239dfd7e4c7cf6663e28a8ea7da10ababf465a91edc77439896417fa8c9540a
+ cip  ~  docker exec -it exec_bash_exercise bash                                  
+root@42333edea99f:/usr/app# tail -f ./logs.txt
+Secret message is:
+"Docker is easy"
+Thu, 29 Oct 2020 13:15:38 GMT
+Thu, 29 Oct 2020 13:15:41 GMT
+Thu, 29 Oct 2020 13:15:44 GMT
+Thu, 29 Oct 2020 13:15:47 GMT
+Secret message is:
+"Docker is easy"
+Thu, 29 Oct 2020 13:15:53 GMT
+Thu, 29 Oct 2020 13:15:56 GMT
+Thu, 29 Oct 2020 13:15:59 GMT
+Thu, 29 Oct 2020 13:16:02 GMT
+Secret message is:
+"Docker is easy"
+```
+
+## 1.5
+
+Start a ubuntu image with the process `sh -c 'echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;'`
+
+You will notice that a few things required for proper execution are missing. Be sure to remind yourself which flags to use so that the read actually waits for input.
+
+> Note also that curl is NOT installed in the container yet. You will have to install it from inside of the container.
+
+Test inputting `helsinki.fi` into the application. It should respond with something like
+```html
+<html>
+
+<head>
+  <title>301 Moved Permanently</title>
+</head>
+
+<body>
+  <h1>Moved Permanently</h1>
+  <p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body>
+
+</html>
+```
+
+This time return the command you used to start process and the command(s) you used to fix the ensuing problems.
+
+> This exercise has multiple solutions, if the curl for helsinki.fi works then it’s done. Can you figure out other (smart) solutions?
+
+*Answer:*
+```
+ cip  ~  docker run -it --name ubuntu_ex_1_5 ubuntu:latest sh -c 'apt-get update && apt-get install -y curl; echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;'
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [107 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+
+[ ... *Updating and fetching / installing curl* ... ]
+
+Setting up curl (7.68.0-1ubuntu2.2) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.1) ...
+Processing triggers for ca-certificates (20201027ubuntu0.20.04.1) ...
+Updating certificates in /etc/ssl/certs...
+0 added, 0 removed; done.
+Running hooks in /etc/ca-certificates/update.d...
+done.
+Input website:
+helsinki.fi
+Searching..
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
+```
+
+## 1.6
+
+Create a Dockerfile that starts with `FROM devopsdockeruh/overwrite_cmd_exercise`. Add a `CMD` line to the Dockerfile.
+
+The developer has poorly documented how the application works. Nevertheless once you will execute an application (run a container from an image) you will have some clues on how it works. Your task is to run an application so that it will simulate a clock functionality.
+
+When you will build an image tag it as “`docker-clock`” so that `docker run docker-clock` starts the application.
+
+Return both Dockerfile(s) and the command you used to run the container(s)
+
+*Answer in folder 1_6*
