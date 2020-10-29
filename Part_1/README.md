@@ -557,3 +557,46 @@ EXPOSE 8000
 
 CMD npm start
 ```
+
+## 1.12
+
+**This exercise is mandatory**
+
+Start both frontend-example and backend-example with correct ports exposed and add ENV to Dockerfile with necessary information from both READMEs ([front](https://github.com/docker-hy/frontend-example-docker),[back](https://github.com/docker-hy/backend-example-docker)).
+
+Ignore the backend configurations until frontend sends requests to `_backend_url_/ping` when you press the button.
+
+You know that the configuration is ready when the button for 1.12 of frontend-example responds and turns green.
+
+*Do not alter the code of either project*
+
+Submit the edited Dockerfiles and commands used to run.
+
+![](1_12/back-and-front.png)
+
+  > The frontend will first talk to your browser. Then the code will be executed from your browser and that will send a message to backend.
+
+![](1_12/about-connection-front-back.png)
+
+  > TIP: When configuring web applications keep browser developer console ALWAYS open, F12 or cmd+shift+I when the browser window is open. Information about configuring cross origin requests is in README of the backend project.
+
+  > TIP: Developer console has multiple views, most important ones are Console and Network. Exploring the Network tab can give you a lot of information on where messages are being sent and what is received as response!
+
+*Answer:*
+
+For the front-end I add the lines
+```
+ENV API_URL=http://localhost:8000
+RUN npm run build
+```
+in the [Dockerfile](1_10/Dockerfile), I rebuild the image and I run it with the command `docker run -p 5000:5000 ex_1_10`, just in exercise `1_10`.
+
+For the back-end I add the line
+```
+ENV FRONT_URL=http://localhost:5000
+```
+in the [Dockerfile](1_11/Dockerfile), I rebuild the image and I run it with the command `docker run -p 8000:8000 -v $(pwd)/logs.txt:/usr/local/www/logs.txt ex_1_11`, just in exercise `1_11`.
+
+This is the response in the browser:
+
+![](1_12/output.png)
