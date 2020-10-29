@@ -227,4 +227,31 @@ When you will build an image tag it as “`docker-clock`” so that `docker run 
 
 Return both Dockerfile(s) and the command you used to run the container(s)
 
-*Answer in folder 1_6*
+*Commands to retrieve the answer:*
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_6   master  docker build -t docker-clock . 
+Sending build context to Docker daemon  2.048kB
+Step 1/1 : FROM devopsdockeruh/overwrite_cmd_exercise
+ ---> 3d2b622b1849
+Successfully built 3d2b622b1849
+Successfully tagged docker-clock:latest
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_6   master  docker run docker-clock        
+
+-h,       	--help           	to show this message
+-a [age], 	--adult [age]    	to check if you're older than 18
+-c [time],	--clock [time]   	to start a clock
+-t [size],	--triangle [size]	to draw a triangle, takes second argument as the size
+    
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_6   master  docker run docker-clock --clock
+1
+2
+3
+4
+5
+```
+
+*Dockerfile:*
+```
+FROM devopsdockeruh/overwrite_cmd_exercise
+```
+*Actual Dockerfile in folder 1_6*
