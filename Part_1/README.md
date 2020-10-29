@@ -410,7 +410,7 @@ Running image:
 INFO: Accepting connections at http://localhost:5000
 ```
 
-Contents of Dockerfile (Actual Dockerfile in folder 1_10):
+*Contents of Dockerfile (Actual Dockerfile in folder 1_10):*
 ``` docker
 FROM ubuntu:latest
 
@@ -438,4 +438,122 @@ CMD serve -s -l 5000 dist
 ```
 
 Output:
-![](/1_10/output.png)
+
+![](1_10/output.png)
+
+## 1.11
+
+**This exercise is mandatory**
+
+Clone, fork or download a project from `https://github.com/docker-hy/backend-example-docker`.
+
+Create a Dockerfile for the project and give a command so that the project runs in a docker container with port `8000` exposed and published so when you start the container and navigate to `http://localhost:8000` you will generate a message in logs.txt in the working directory.
+
+Create a volume for the `logs.txt` so that when the application is shut down the logs are not destroyed. And when restarted it continues to write into the same `logs.txt`.
+
+Submit the Dockerfile and the command used.
+
+*Do not alter the code of the project*
+
+*Answer:*
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_11   master ±  docker run -p 8000:8000 -v $(pwd)/logs.txt:/usr/local/www/logs.txt ex_1_11 
+
+> backend-example-docker@1.0.0 start /usr/local/www
+> node index.js
+
+ENV values set as follows: { DB:
+   { username: undefined,
+     password: undefined,
+     database: undefined,
+     host: 'localhost' },
+  PORT: 8000,
+  FRONT_URL: '',
+  REDIS: undefined,
+  REDIS_PORT: 6379 }
+[Exercise 2.6+] DB_USERNAME and/or DB_PASSWORD are not defined, skipping db connection
+[Exercise 2.5+] REDIS is not defined, skipping redis connection
+Started on port 8000
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 4.927 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.535 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.437 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.265 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.388 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.270 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.254 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.255 ms
+ ✘ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_11   master ±  cat logs.txt
+10/29/2020, 4:08:44 PM: Connection received in root
+10/29/2020, 4:08:49 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_11   master ±  docker run -p 8000:8000 -v $(pwd)/logs.txt:/usr/local/www/logs.txt ex_1_11
+
+> backend-example-docker@1.0.0 start /usr/local/www
+> node index.js
+
+ENV values set as follows: { DB:
+   { username: undefined,
+     password: undefined,
+     database: undefined,
+     host: 'localhost' },
+  PORT: 8000,
+  FRONT_URL: '',
+  REDIS: undefined,
+  REDIS_PORT: 6379 }
+[Exercise 2.6+] DB_USERNAME and/or DB_PASSWORD are not defined, skipping db connection
+[Exercise 2.5+] REDIS is not defined, skipping redis connection
+Started on port 8000
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 6.624 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.611 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.345 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.267 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.301 ms
+::ffff:172.17.0.1 - GET / HTTP/1.1 304 - - 0.540 ms
+ ✘ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_11   master ±  cat logs.txt                                                              
+10/29/2020, 4:08:44 PM: Connection received in root
+10/29/2020, 4:08:49 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:08:50 PM: Connection received in root
+10/29/2020, 4:09:44 PM: Connection received in root
+10/29/2020, 4:09:44 PM: Connection received in root
+10/29/2020, 4:09:45 PM: Connection received in root
+10/29/2020, 4:09:45 PM: Connection received in root
+10/29/2020, 4:09:45 PM: Connection received in root
+10/29/2020, 4:09:45 PM: Connection received in root
+```
+
+Even after stopping and restarting the container, the contents of `logs.txt` are kept.
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_11):*
+```docker
+FROM ubuntu:latest
+
+RUN apt-get update -y && apt-get install git curl -y
+
+# Installation instructions from https://github.com/docker-hy/backend-example-docker
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get update -y && apt install -y nodejs
+
+# Check install
+RUN node -v && npm -v
+
+RUN git clone https://github.com/docker-hy/backend-example-docker
+RUN mv backend-example-docker /usr/local/www
+
+WORKDIR /usr/local/www
+
+RUN npm install
+
+EXPOSE 8000
+
+CMD npm start
+```
