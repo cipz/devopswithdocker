@@ -1,0 +1,16 @@
+version: '3' 
+
+services: 
+  ex_2_3_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_3_frontend
+
+  ex_2_3_backend:  
+    image: backend:latest
+    build: ./backend/
+    ports: 
+      - 8000:8000
+    container_name: ex_2_3_backend
