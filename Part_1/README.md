@@ -227,7 +227,7 @@ When you will build an image tag it as “`docker-clock`” so that `docker run 
 
 Return both Dockerfile(s) and the command you used to run the container(s)
 
-*Commands to retrieve the answer:*
+*Answer:*
 ```
  cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_6   master  docker build -t docker-clock . 
 Sending build context to Docker daemon  2.048kB
@@ -250,8 +250,192 @@ Successfully tagged docker-clock:latest
 5
 ```
 
-*Dockerfile:*
-```
+*Contents of Dockerfile (Actual Dockerfile in folder 1_6):*
+```docker
 FROM devopsdockeruh/overwrite_cmd_exercise
 ```
-*Actual Dockerfile in folder 1_6*
+
+## 1.7
+
+Now that we know how to create and build Dockerfiles we can improve previous works.
+
+Create a Dockerfile for a new image that starts `from ubuntu:16.04`.
+
+Make a script file on you local machine with such content as `echo "Input website:"; read website; echo "Searching.."; sleep 1; curl http://$website;`. Transfer this file to an image and run it inside the container using `CMD`. Build the image with tag “`curler`”.
+
+Run command `docker run [options] curler` (with correct flags again, as in 1.5) and input `helsinki.fi` into it. Output should match the 1.5 one.
+
+Return both Dockerfile(s) and the command you used to run the container(s)
+
+*Answer:*
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_7   master ±  docker build -t curler .
+Sending build context to Docker daemon  3.072kB
+Step 1/4 : FROM ubuntu:16.04
+ ---> dfeff22e96ae
+Step 2/4 : RUN apt-get update -y && apt-get install curl -y
+ ---> Using cache
+ ---> aef657d1e7f2
+Step 3/4 : COPY script.sh .
+ ---> Using cache
+ ---> bba5272bd4bd
+Step 4/4 : CMD ["/bin/bash", "script.sh"]
+ ---> Using cache
+ ---> bd25139ad7f8
+Successfully built bd25139ad7f8
+Successfully tagged curler:latest
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_7   master ±  docker run -it curler   
+Input website:
+helsinki.fi
+Searching..
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="http://www.helsinki.fi/">here</a>.</p>
+</body></html>
+```
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_7):*
+```docker
+FROM ubuntu:16.04
+
+RUN apt-get update -y && apt-get install curl -y
+
+COPY script.sh .
+
+CMD ["/bin/bash", "script.sh"]
+```
+
+## 1.8
+
+In this exercise we won’t create a new Dockerfile. Image `devopsdockeruh/first_volume_exercise` has instructions to create a log into `/usr/app/logs.txt`. Start the container with bind mount so that the logs are created into your filesystem.
+
+Submit your used commands for this exercise.
+
+*Answer:*
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1   master ±  touch logs.txt   
+
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1   master ±  docker run -v $(pwd)/logs.txt:/usr/app/logs.txt devopsdockeruh/first_volume_exercise
+Wrote to file /usr/app/logs.txt
+Wrote to file /usr/app/logs.txt
+```
+And from another terminal we can monitor the log file
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1   master ±  tail -f logs.txt   
+Thu, 29 Oct 2020 14:56:19 GMT
+Thu, 29 Oct 2020 14:56:22 GMT
+Thu, 29 Oct 2020 14:56:25 GMT
+Thu, 29 Oct 2020 14:56:28 GMT
+Secret message is:
+"Volume bind mount is easy"
+Thu, 29 Oct 2020 14:56:34 GMT
+Thu, 29 Oct 2020 14:56:37 GMT
+Thu, 29 Oct 2020 14:56:40 GMT
+Thu, 29 Oct 2020 14:56:43 GMT
+Secret message is:
+"Volume bind mount is easy"
+Thu, 29 Oct 2020 14:56:49 GMT
+Thu, 29 Oct 2020 14:56:52 GMT
+```
+
+## 1.9
+
+In this exercise we won’t create a new Dockerfile. Image `devopsdockeruh/ports_exercise` will start a web service in port `80`. Use `-p` flag to access the contents with your browser.
+
+Submit your used commands for this exercise.
+
+*Answer:*
+```
+ cip  ~/Desktop/UNI/devopswithdocker   master ±  docker run -p 80:80 devopsdockeruh/ports_exercise                                   
+Unable to find image 'devopsdockeruh/ports_exercise:latest' locally
+latest: Pulling from devopsdockeruh/ports_exercise
+cbdbe7a5bc2a: Pull complete 
+fb0e3739aee1: Pull complete 
+738de7869598: Pull complete 
+ffd68be3d86c: Pull complete 
+d6a92ac5065d: Pull complete 
+8deb0960be38: Pull complete 
+aec7a3bd83e0: Pull complete 
+8f73392c117e: Pull complete 
+Digest: sha256:9779e303353ef47da9ea0223bfbb9fbdb8f8fe39178e2e06153027e28e9e5400
+Status: Downloaded newer image for devopsdockeruh/ports_exercise:latest
+
+> ports_exercise@1.0.0 start /usr/app
+> node index.js
+
+Listening on port 80, this means inside of the container. Use -p to map the port to a port of your local machine.
+```
+
+And from the browser, when I try to access localhost: `Ports configured correctly!!`
+
+## 1.10
+
+**This exercise is mandatory**
+
+A good developer creates well written READMEs that can be used to create Dockerfiles with ease.
+
+Clone, fork or download a project from https://github.com/docker-hy/frontend-example-docker.
+
+Create a Dockerfile for the project and give a command so that the project runs in a docker container with port `5000` exposed and published so when you start the container and navigate to `http://localhost:5000` you will see message if you’re successful.
+
+Submit the Dockerfile.
+
+As in other exercises, do not alter the code of the project
+
+  >**TIP**: The project has install instructions in README.
+
+  > **TIP**: Note that the app starts to accept connections when “`Accepting connections at http://localhost:5000`” has been printed to the screen, this takes a few seconds
+
+  > **TIP**: You do not have to install anything new outside containers.
+
+*Answer:*
+
+Building image:
+```
+ cip  ~/Desktop/UNI/devopswithdocker/1_10   master ±  docker build -t ex_1_10 .
+Sending build context to Docker daemon   2.56kB
+Step 1/13 : FROM ubuntu:latest
+ ---> d70eaf7277ea
+Step 2/13 : RUN apt-get update -y && apt-get install git curl -y
+
+[ ... *Installing dependencies / fetching program / installing* ... ]
+```
+
+Running image:
+```
+ cip  ~/Desktop/UNI/devopswithdocker/1_10   master ±  docker run -p 5000:5000 ex_1_10
+INFO: Accepting connections at http://localhost:5000
+```
+
+Contents of Dockerfile (Actual Dockerfile in folder 1_10):
+``` docker
+FROM ubuntu:latest
+
+RUN apt-get update -y && apt-get install git curl -y
+
+# Installation instructions from https://github.com/docker-hy/frontend-example-docker
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get update -y && apt install -y nodejs
+
+# Check install
+RUN node -v && npm -v
+
+RUN git clone https://github.com/docker-hy/frontend-example-docker
+RUN mv frontend-example-docker /usr/local/www
+
+WORKDIR /usr/local/www
+
+RUN npm install
+RUN npm run build
+RUN npm install -g serve
+
+EXPOSE 5000
+
+CMD serve -s -l 5000 dist
+```
+
+Output:
+![](/1_10/output.png)
