@@ -43,7 +43,7 @@ Thu, 29 Oct 2020 19:21:08 GMT
 ```
 
 Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_1):
-```docker compose
+```docker
 version: '3' 
 
 services: 
@@ -77,7 +77,7 @@ ex_2_2    | Listening on port 80, this means inside of the container. Use -p to 
 ```
 
 Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_2):
-```docker compose
+```docker
 version: '3' 
 
 services: 
@@ -214,7 +214,7 @@ ex_2_3_backend     | Started on port 8000
 ex_2_3_backend     | ::ffff:172.20.0.1 - GET /ping HTTP/1.1 304 - - 5.759 ms
 ```
 Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_3):
-```
+```docker
 version: '3' 
 
 services: 
@@ -231,4 +231,20 @@ services:
     ports: 
       - 8000:8000
     container_name: ex_2_3_backend
+```
+Without copying the dockerfile I could've just specified the path of the files in the folders of Part 1.
+
+## 2.4 Scaling exercise
+
+A project over at [https://github.com/docker-hy/scaling-exercise](https://github.com/docker-hy/scaling-exercise) has a hardly working application. Go ahead and clone it for yourself. The project already includes `docker-compose.yml` so you can start it by running `docker-compose up`.
+
+Application should be accessible through [http://localhost:3000](http://localhost:3000). However it doesn’t work well enough and I’ve added a load balancer for scaling. Your task is to scale the `compute` containers so that the button in the application turns green.
+
+This exercise was created with [Sasu Mäkinen](https://github.com/sasumaki).
+
+Please return the used commands for this exercise.
+
+*Answer:*
+```
+docker-compose up --scale compute=3
 ```
