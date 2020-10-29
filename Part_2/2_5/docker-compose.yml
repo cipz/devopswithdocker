@@ -1,0 +1,27 @@
+version: '3' 
+
+services: 
+
+  ex_2_5_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_3_frontend
+
+  ex_2_5_backend:  
+    image: backend:latest
+    build: ./backend/
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_5_redis
+      - REDIS_PORT=6379
+    container_name: ex_2_3_backend
+    restart: unless-stopped
+
+  ex_2_5_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_5_redis
