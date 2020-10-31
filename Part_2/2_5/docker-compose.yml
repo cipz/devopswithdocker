@@ -7,7 +7,7 @@ services:
     build: ./frontend/
     ports: 
       - 5000:5000
-    container_name: ex_2_3_frontend
+    container_name: ex_2_5_frontend
 
   ex_2_5_backend:  
     image: backend:latest
@@ -17,7 +17,7 @@ services:
     environment:
       - REDIS=ex_2_5_redis
       - REDIS_PORT=6379
-    container_name: ex_2_3_backend
+    container_name: ex_2_5_backend
     restart: unless-stopped
 
   ex_2_5_redis:

@@ -1,0 +1,44 @@
+version: '3' 
+
+services: 
+
+  ex_2_6_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_6_frontend
+
+  ex_2_6_backend:  
+    image: backend:latest
+    build: ./backend/
+    volumes: 
+      - ${PWD}/logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_6_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_2_6_postgres
+    container_name: ex_2_6_backend
+    restart: unless-stopped
+
+  ex_2_6_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_6_redis
+  
+  ex_2_6_postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
