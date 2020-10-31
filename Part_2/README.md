@@ -1,4 +1,4 @@
-```# Exercises for [part 2](https://devopswithdocker.com/part2/)
+# Exercises for [part 2](https://devopswithdocker.com/part2/)
 
 ## 2.1
 
