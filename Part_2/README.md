@@ -1,4 +1,4 @@
-# Exercises for [part 2](https://devopswithdocker.com/part2/)
+```# Exercises for [part 2](https://devopswithdocker.com/part2/)
 
 ## 2.1
 
@@ -444,3 +444,115 @@ Submit the `docker-compose.yml`
 
 *Answer:*
 
+Contents of `docker-compose.yml` (Actual docker-compose.yml in folder 2_6):
+
+```docker
+version: '3' 
+
+services: 
+
+  ex_2_6_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_6_frontend
+
+  ex_2_6_backend:  
+    image: backend:latest
+    build: ./backend/
+    volumes: 
+      - ${PWD}/logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_6_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_2_6_postgres
+    container_name: ex_2_6_backend
+    restart: unless-stopped
+
+  ex_2_6_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_6_redis
+  
+  ex_2_6_postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
+```
+
+## 2.7 Configure a [machine learning](https://en.wikipedia.org/wiki/Machine_learning) project.
+
+Look into machine learning project created with Python and React and split into three parts: [frontend](https://github.com/docker-hy/ml-kurkkumopo-frontend), [backend](https://github.com/docker-hy/ml-kurkkumopo-backend) and [training](https://github.com/docker-hy/ml-kurkkumopo-training).
+
+Note that the training requires 2 volumes and backend should share volume `/src/model` with training.
+
+The frontend will display on `http://localhost:3000` and the application will tell if the subject of an image looks more like a cucumber or a moped.
+
+Submit the `docker-compose.yml`.
+
+  > This exercise is known to have broken for some attendees based on CPU. The error looks something like “Illegal instruction (core dumped)”. Try downgrading / upgrading the tensorflow found in requirements.txt or join the telegram channel and message with @jakousa.
+
+  > Note that the generated model is a toy and will not produce good results.
+
+  > It will take SEVERAL minutes to build the docker images, download training pictures and train the classifying model.
+
+This exercise was created by [Sasu Mäkinen](https://github.com/sasumaki)
+
+*Answer:*
+
+Contents of `docker-compose.yml` (Actual docker-compose.yml in folder 2_7):
+
+```
+version: '3' 
+
+services: 
+
+  ex_2_7_frontend:  
+    image: frontend:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-frontend.git
+    ports: 
+      - 3000:3000
+    container_name: ex_2_7_frontend
+
+  ex_2_7_backend:  
+    image: backend:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-backend.git
+    ports: 
+      - 5000:5000
+    container_name: ex_2_7_backend
+    restart: unless-stopped
+    ports: 
+      - 5000:5000
+    volumes:
+      - models:/src/model
+    depends_on: 
+      - ex_2_7_training
+
+  ex_2_7_training:  
+    image: training:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-training.git
+    container_name: ex_2_7_training
+    volumes:
+      - models:/src/model
+      - images:/src/imgs
+
+volumes:
+  models:
+  images: 
+```
+The output from the webserver when uploading a picture:
+
+![](2_7/output.png)

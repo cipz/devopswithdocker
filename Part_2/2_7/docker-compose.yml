@@ -1,0 +1,36 @@
+version: '3' 
+
+services: 
+
+  ex_2_7_frontend:  
+    image: frontend:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-frontend.git
+    ports: 
+      - 3000:3000
+    container_name: ex_2_7_frontend
+
+  ex_2_7_backend:  
+    image: backend:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-backend.git
+    ports: 
+      - 5000:5000
+    container_name: ex_2_7_backend
+    restart: unless-stopped
+    ports: 
+      - 5000:5000
+    volumes:
+      - models:/src/model
+    depends_on: 
+      - ex_2_7_training
+
+  ex_2_7_training:  
+    image: training:latest
+    build: https://github.com/docker-hy/ml-kurkkumopo-training.git
+    container_name: ex_2_7_training
+    volumes:
+      - models:/src/model
+      - images:/src/imgs
+
+volumes:
+  models:
+  images: 
