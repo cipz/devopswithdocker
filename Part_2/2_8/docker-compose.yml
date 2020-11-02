@@ -1,0 +1,57 @@
+version: '3' 
+
+services: 
+
+  ex_2_8_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_8_frontend
+
+    environment:
+      - API_URL='/api'
+
+  ex_2_8_backend:  
+    image: backend:latest
+    build: ./backend/
+    volumes: 
+      - ./logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_8_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_2_8_postgres
+    container_name: ex_2_8_backend
+    restart: unless-stopped
+
+  ex_2_8_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_8_redis
+  
+  ex_2_8_postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - ./database:/var/lib/postgresql/data
+
+  ex_2_8_nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - ex_2_8_frontend
+      - ex_2_8_backend
+
+volumes:
+  database:
