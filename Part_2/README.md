@@ -101,7 +101,7 @@ Since we already created working Dockerfiles for both frontend and backend we ca
 
 Configure the backend and frontend from part 1 to work in docker-compose.
 
-Submit the docker-compose.yml
+Submit the `docker-compose.yml`
 
 *Answer:*
 ```
@@ -391,7 +391,7 @@ ex_2_3_backend     | Cache set successfully
 ex_2_3_backend     | Started on port 8000
 ```
 
-Contents of `docker-compose.yml` (Actual docker-compose.yml in folder 2_5):
+Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_5):
 ```
 version: '3' 
 
@@ -444,7 +444,7 @@ Submit the `docker-compose.yml`
 
 *Answer:*
 
-Contents of `docker-compose.yml` (Actual docker-compose.yml in folder 2_6):
+Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_6):
 
 ```docker
 version: '3' 
@@ -513,7 +513,7 @@ This exercise was created by [Sasu Mäkinen](https://github.com/sasumaki)
 
 *Answer:*
 
-Contents of `docker-compose.yml` (Actual docker-compose.yml in folder 2_7):
+Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_7):
 
 ```
 version: '3' 
@@ -589,9 +589,9 @@ The following file should be set to `/etc/nginx/nginx.conf` inside the nginx con
   }
 ```
 
-Note that again inside the docker-compose network the connecting urls are usually form “http://hostname:port” where hostname and port are both known only inside the network.
+Note that again inside the docker-compose network the connecting urls are usually form "`http://hostname:port`" where hostname and port are both known only inside the network.
 
-Submit the docker-compose.yml
+Submit the `docker-compose.yml`
 
   > **Nginx specific information** on why the api might not be found with your url: 
   Without a trailing `/` in `proxy_pass` url nginx will preserve `location` in your url.
@@ -600,3 +600,153 @@ Submit the docker-compose.yml
 
 
 *Answer:*
+
+Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_8):
+
+```docker
+version: '3' 
+
+services: 
+
+  ex_2_8_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_8_frontend
+
+  ex_2_8_backend:  
+    image: backend:latest
+    build: ./backend/
+    volumes: 
+      - ./logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_8_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_2_8_postgres
+    container_name: ex_2_8_backend
+    restart: unless-stopped
+
+  ex_2_8_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_8_redis
+  
+  ex_2_8_postgres:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  ex_2_8_nginx:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - ex_2_8_frontend
+      - ex_2_8_backend
+
+volumes:
+  database:
+```
+
+## 2.9
+
+Postgres image uses a volume by default. Manually define volumes for the database in convenient location such as in `./database` . Use the image documentations (postgres) to help you with the task. You may do the same for redis as well.
+
+After you have configured the volume:
+
+  - Save a few messages through the frontend
+  - Run `docker-compose down`
+  - Run `docker-compose up` and see that the messages are available after - refreshing browser
+  - Run `docker-compose down` and delete the volume folder manually
+  - Run `docker-compose up` and the data should be gone
+
+Maybe it would be simpler to back them up now that you know where they are.
+
+  > TIP: To save you the trouble of testing all of those steps, just look into the folder before trying the steps. If it’s empty after docker-compose up then something is wrong.
+
+  > TIP: Since you may have broken the buttons in nginx exercise you should test with `docker-compose.yml` from before it
+
+Submit the `docker-compose.yml`
+
+Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_9:
+
+```docker
+version: '3' 
+
+services: 
+
+  ex_2_9_frontend:  
+    image: frontend:latest
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_2_9_frontend
+
+  ex_2_9_backend:  
+    image: backend:latest
+    build: ./backend/
+    volumes: 
+      - ./logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_2_9_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_2_9_postgres
+    container_name: ex_2_9_backend
+    restart: unless-stopped
+
+  ex_2_9_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_2_9_redis
+  
+  ex_2_9_postgres:
+    image: postgres
+    restart: unless-stopped
+    container_name: ex_2_9_postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  ex_2_9_nginx:
+    container_name: ex_2_9_nginx
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - ex_2_9_frontend
+      - ex_2_9_backend
+
+volumes:
+  database:
+```
+
+## 2.10
+
+Some buttons may have stopped working in the frontend + backend project. Make sure that every button for exercises works.
+
+This may need a peek into the browsers developer consoles again like back part 1. The buttons of nginx exercise and the first button behave differently but you want them to match.
+
+If you had to do any changes explain what you had to change.
+
+Submit the docker-compose yml and both dockerfiles.
