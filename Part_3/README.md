@@ -63,34 +63,6 @@ EXPOSE 8000
 
 CMD npm start
 ```
-
-## 3.2 A deployment pipeline to heroku
-
-Let’s create our first deployment pipeline!
-
-For this exercise you can select which ever web application you already have containerized.
-
-If you don’t have any web applications available you can use any one from this course and modify it. (Such as the course material itself)
-
-Let’s use GitHub, CircleCI, and Heroku to deploy to heroku. You can also use GitHub actions instead of CircleCI.
-
-CircleCI offers orbs for Heroku deployment, but you can just use the instructions from Heroku (or exercise 1.16).
-
-Submit a link to the repository with the config.
-
-
-## 3.3 Building images inside of a container
-
-Watchtower uses volume to docker.sock socket to access Docker daemon of the host from the container. By leveraging this ourselves we can create our own simple build service.
-
-Create a project that downloads a repository from github, builds a Dockerfile located in the root and then publishes it into Docker Hub.
-
-You can use any programming language / technology for the project implementation. A simple bash script is viable
-
-Then create a Dockerfile for it so that it can be run inside a container.
-
-Make sure that it can build at least some of the example projects.
-
 ## 3.4
 
 **This exercise is mandatory**
@@ -101,3 +73,107 @@ Make sure the containers start their processes as a non-root user.
 
   > TIP `man chown` may help you if you have access errors
 
+*Contents of frontend Dockerfile (Actual Dockerfile in folder 3_4/frontend):*
+```docker
+FROM node:12-alpine
+
+RUN apk add --no-cache git ; \
+    git clone https://github.com/docker-hy/frontend-example-docker.git /usr/local/www ; \
+    apk del git
+
+WORKDIR /usr/local/www
+
+RUN npm install ; \
+    chown -R node /usr/local/www
+
+USER node 
+
+EXPOSE 5000
+
+CMD npm start
+```
+
+*Contents of backend Dockerfile (Actual Dockerfile in folder 3_4/backend):*
+```docker
+FROM node:12-alpine
+
+RUN apk add --no-cache git ; \
+    git clone https://github.com/docker-hy/backend-example-docker.git /usr/local/www ; \
+    apk del git
+
+WORKDIR /usr/local/www
+
+RUN npm install ; \
+    touch /usr/local/www/logs.txt ; \
+    chown -R node /usr/local/www
+
+USER node
+
+EXPOSE 8000
+ENV FRONT_URL=http://localhost:80
+
+CMD npm start
+```
+
+*Contents of `docker-compose.yml` file (Actual `docker-compose.yml` in folder 3_4):*
+```docker
+version: '3' 
+
+services: 
+
+  ex_3_4_frontend:  
+    image: frontend:final
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_3_4_frontend
+    environment:
+      - API_URL=api
+
+  ex_3_4_backend:  
+    image: backend:final
+    build: ./backend/
+    volumes: 
+      - ./logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_3_4_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_3_4_postgres
+      - FRONT_URL=localhost
+    container_name: ex_3_4_backend
+    restart: unless-stopped
+
+  ex_3_4_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_3_4_redis
+  
+  ex_3_4_postgres:
+    image: postgres
+    restart: unless-stopped
+    container_name: ex_3_4_postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  ex_3_4_nginx:
+    container_name: ex_3_4_nginx
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - ex_3_4_frontend
+      - ex_3_4_backend
+
+volumes:
+  database:
+```
