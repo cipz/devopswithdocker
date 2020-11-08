@@ -8,6 +8,8 @@ services:
     ports: 
       - 5000:5000
     container_name: ex_2_9_frontend
+    environment:
+      - API_URL='/api'
 
   ex_2_9_backend:  
     image: backend:latest
@@ -22,6 +24,7 @@ services:
       - DB_USERNAME=admin
       - DB_PASSWORD=admin
       - DB_HOST=ex_2_9_postgres
+      - FRONT_URL='localhost'
     container_name: ex_2_9_backend
     restart: unless-stopped
 

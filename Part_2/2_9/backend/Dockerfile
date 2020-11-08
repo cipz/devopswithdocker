@@ -15,7 +15,7 @@ RUN mv backend-example-docker /usr/local/www
 WORKDIR /usr/local/www
 
 # For ex_1_12
-ENV FRONT_URL=http://localhost:5000
+# ENV FRONT_URL=http://localhost:5000
 
 RUN npm install
 

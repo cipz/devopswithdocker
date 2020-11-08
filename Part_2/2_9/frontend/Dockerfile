@@ -21,7 +21,7 @@ RUN npm install -g serve
 EXPOSE 5000
 
 # For ex_1_12
-ENV API_URL=http://localhost:8000
+# ENV API_URL=http://localhost:8000
 RUN npm run build
 
 CMD serve -s -l 5000 dist
