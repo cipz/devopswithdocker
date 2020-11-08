@@ -4,20 +4,64 @@
 
 Return back to our [frontend](https://github.com/docker-hy/frontend-example-docker) & [backend](https://github.com/docker-hy/backend-example-docker) Dockerfiles and you should see the some mistakes we now know to fix.
 
-Document both image sizes at this point, as was done in the material. Optimize the Dockerfiles of both programs, frontend and backend, by joining the RUN commands and removing useless parts.
+Document both image sizes at this point, as was done in the material. Optimize the Dockerfiles of both programs, frontend and backend, by joining the `RUN` commands and removing useless parts.
 
 After your improvements document the image sizes again. The size difference may not be very much yet. The frontend should be around 432MB when using FROM ubuntu:16.04. The backend should be around 351MB. The sizes may vary.
 
 *Answer:*
 
-*Contents of Dockerfile (Actual Dockerfile in folder 3_1):*
+*Contents of frontend Dockerfile (Actual Dockerfile in folder 3_1/frontend):*
 ```docker
-I AM DOCKER
+FROM ubuntu:20.04
+
+RUN apt-get update -y ; \
+    apt-get install git curl -y ; \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash ; \
+    apt-get install nodejs -y ; \
+    apt-get purge -y --auto-remove curl ; \
+    rm -rf /var/lib/apt/lists/* ; \
+    node -v && npm -v ;  
+
+CMD git clone https://github.com/docker-hy/frontend-example-docker ; \
+    mv frontend-example-docker /usr/local/www ;
+
+WORKDIR /usr/local/www
+
+CMD npm install ; \
+    npm run build ;   \
+    npm install -g serve ; \
+    npm run build
+
+EXPOSE 5000
+
+ENV API_URL=http://localhost:8000
+
+CMD serve -s -l 5000 dist
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 3_1):*
+*Contents of backend Dockerfile (Actual Dockerfile in folder 3_1/backend):*
 ```docker
-I AM DOCKER
+FROM ubuntu:20.04
+
+RUN apt-get update -y && apt-get install git curl -y ; \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash ; \
+    apt install -y nodejs ; \
+    node -v && npm -v ; 
+
+CMD git clone https://github.com/docker-hy/backend-example-docker ; 
+
+WORKDIR /usr/local/www
+
+RUN mv backend-example-docker /usr/local/www ; \
+    npm install ; \
+    apt-get purge -y --auto-remove curl ; \
+    rm -rf /var/lib/apt/lists/*
+
+ENV FRONT_URL=http://localhost:5000
+
+EXPOSE 8000
+
+CMD npm start
 ```
 
 ## 3.2 A deployment pipeline to heroku
