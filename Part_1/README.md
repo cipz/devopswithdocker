@@ -701,7 +701,7 @@ COPY ./public-html/ /usr/local/apache2/htdocs/
 EXPOSE 80
 ```
 
-## 1.16
+## 1.16 TODO
 
 Pushing to heroku happens in a similar way. A project has already been prepared at `devopsdockeruh/heroku-example` so lets pull that first. Note that the image of the project is quite large.
 
@@ -729,7 +729,7 @@ docker build -t ex_1_17 .
 docker run -it ex_1_17  
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_15):*
+*Contents of Dockerfile (Actual Dockerfile in folder 1_17):*
 ```docker
 FROM ubuntu:latest
 
