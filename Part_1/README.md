@@ -646,6 +646,8 @@ If you want you can make small edits to the program if you get stuck and google 
 
 You’ve completed the exercise when the application works in your browser.
 
+*Answer:*
+
 Building the image and running the container:
 ```
 docker build -t ex_1_14 . 
@@ -681,6 +683,23 @@ CMD rails s
 Create Dockerfile for an application or any other dockerised project in any of your own repositories and publish it to Docker Hub. This can be any project except clones / forks of backend-example or frontend-example.
 
 For this exercise to be complete you have to provide the link to the project in docker hub, make sure you at least have a basic description and instructions for how to run the application in a [README](https://help.github.com/en/articles/about-readmes) that’s available through your submission.
+
+*Answer:*
+
+Building the image and running the container:
+```
+docker build -t ex_1_15 .
+docker run -p 80:80 ex_1_15 
+```
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_15):*
+```docker
+FROM httpd:latest
+
+COPY ./public-html/ /usr/local/apache2/htdocs/
+
+EXPOSE 80
+```
 
 ## 1.16
 
