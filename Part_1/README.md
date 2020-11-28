@@ -371,7 +371,7 @@ Listening on port 80, this means inside of the container. Use -p to map the port
 
 And from the browser, when I try to access localhost: `Ports configured correctly!!`
 
-## 1.10
+## 1.10 Frontend
 
 **This exercise is mandatory**
 
@@ -441,7 +441,7 @@ Output:
 
 ![](1_10/output.png)
 
-## 1.11
+## 1.11 Backend
 
 **This exercise is mandatory**
 
@@ -558,7 +558,7 @@ EXPOSE 8000
 CMD npm start
 ```
 
-## 1.12
+## 1.12 Putting them together
 
 **This exercise is mandatory**
 
@@ -610,6 +610,29 @@ The setup should be straightforward with the README instructions. Tips to get yo
 Use [openjdk image](https://hub.docker.com/_/openjdk) `FROM openjdk:_tag_` to get java instead of installing it manually. Pick the tag by using the README and dockerhub page.
 
 You’ve completed the exercise when you see a `‘Success’` message in your browser.
+
+*Answer:*
+
+Building the image and running the container:
+```
+docker build -t ex_1_13 .
+docker run -p 8080:8080 ex_1_13
+```
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_13):*
+```docker
+FROM openjdk:8
+
+RUN git clone https://github.com/docker-hy/spring-example-project /usr/local/java
+
+WORKDIR /usr/local/java
+
+RUN ./mvnw package
+
+EXPOSE 8080
+
+CMD java -jar ./target/docker-example-1.1.3.jar
+```
 
 ## 1.14
 
