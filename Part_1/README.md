@@ -750,5 +750,6 @@ COPY ./hello_world.c /app
 root@231d81912402:/app# gcc hello_world.c 
 root@231d81912402:/app# ./a.out 
 Hello World 
-root@231d81912402:/app# 
+root@231d81912402:/app# exit
+exit
 ```
