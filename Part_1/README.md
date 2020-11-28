@@ -646,6 +646,36 @@ If you want you can make small edits to the program if you get stuck and google 
 
 You’ve completed the exercise when the application works in your browser.
 
+Building the image and running the container:
+```
+docker build -t ex_1_14 . 
+docker run -p 3000:3000 ex_1_14
+```
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_14):*
+```docker
+FROM ruby:2.6.0
+
+RUN git clone https://github.com/docker-hy/rails-example-project /usr/local/rails
+
+WORKDIR /usr/local/rails
+
+RUN apt-get update && apt-get install -y nodejs 
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get update && apt-get install -y nodejs
+RUN npm install yarn -g
+RUN gem install bundler
+RUN bundle install
+
+RUN rails db:migrate && rake assets:precompile
+
+ENV SECRET_KEY_BASE 1234
+ENV RAILS_MASTER_KEY 1234
+
+EXPOSE 3000
+
+CMD rails s
+```
+
 ## 1.15
 
 Create Dockerfile for an application or any other dockerised project in any of your own repositories and publish it to Docker Hub. This can be any project except clones / forks of backend-example or frontend-example.
