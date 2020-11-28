@@ -720,3 +720,35 @@ Create an image that contains your favorite programming environment in it’s en
 This means that a computer that only has docker can use the image to start a container which contains all the tools and libraries. Excluding IDE / Editor. The environment can be partially used by running commands manually inside the container.
 
 Explain what you created and publish it to Docker Hub.
+
+*Answer:*
+
+Building the image and running the container:
+```
+docker build -t ex_1_17 .
+docker run -it ex_1_17  
+```
+
+*Contents of Dockerfile (Actual Dockerfile in folder 1_15):*
+```docker
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update
+
+RUN apt-get -y install gcc
+
+WORKDIR /app
+
+COPY ./hello_world.c /app
+```
+
+*Output of the execution*
+```
+ cip  ~/Desktop/UNI/devopswithdocker/Part_1/1_17   master ±  docker run -it ex_1_17   
+root@231d81912402:/app# gcc hello_world.c 
+root@231d81912402:/app# ./a.out 
+Hello World 
+root@231d81912402:/app# 
+```
