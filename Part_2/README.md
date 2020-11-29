@@ -82,7 +82,6 @@ version: '3'
 services: 
     ex_2_2:  
       image: devopsdockeruh/ports_exercise
-      build: . 
       ports: 
         - 80:80
       container_name: ex_2_2
