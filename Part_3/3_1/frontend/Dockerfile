@@ -8,10 +8,9 @@ RUN apt-get update -y ; \
     rm -rf /var/lib/apt/lists/* ; \
     node -v && npm -v ;  
 
-CMD git clone https://github.com/docker-hy/frontend-example-docker ; \
-    mv frontend-example-docker /usr/local/www ;
-
 WORKDIR /usr/local/www
+
+CMD git clone https://github.com/docker-hy/frontend-example-docker /usr/local/www
 
 CMD npm install ; \
     npm run build ;   \

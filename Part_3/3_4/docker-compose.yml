@@ -15,7 +15,7 @@ services:
     image: backend:final
     build: ./backend/
     volumes: 
-      - ./logs.txt:/usr/local/www/backend/logs.txt
+      - ${PWD}/logs.txt:/usr/local/www/backend/logs.txt
     ports: 
       - 8000:8000
     environment:

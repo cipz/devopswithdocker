@@ -63,6 +63,34 @@ EXPOSE 8000
 
 CMD npm start
 ```
+
+## 3.2 A deployment pipeline to heroku TODO
+
+Let’s create our first deployment pipeline!
+
+For this exercise you can select which ever web application you already have containerized.
+
+If you don’t have any web applications available you can use any one from this course and modify it. (Such as the course material itself)
+
+Let’s use GitHub, CircleCI, and Heroku to deploy to heroku. You can also use GitHub actions instead of CircleCI.
+
+CircleCI offers orbs for Heroku deployment, but you can just use the instructions from Heroku (or exercise 1.16).
+
+Submit a link to the repository with the config.
+
+
+## 3.3 Building images inside of a container TODO
+
+Watchtower uses volume to docker.sock socket to access Docker daemon of the host from the container. By leveraging this ourselves we can create our own simple build service.
+
+Create a project that downloads a repository from github, builds a Dockerfile located in the root and then publishes it into Docker Hub.
+
+You can use any programming language / technology for the project implementation. A simple bash script is viable
+
+Then create a Dockerfile for it so that it can be run inside a container.
+
+Make sure that it can build at least some of the example projects.
+
 ## 3.4
 
 **This exercise is mandatory**
@@ -177,3 +205,29 @@ services:
 volumes:
   database:
 ```
+
+## 3.5 Document the image size before the changes. TODO
+
+Rather than going to `FROM alpine` or scratch, lets go look into docker-node and we should find a way how to run a container that has everything pre-installed for us. There’s even a best practices guide
+
+Return back to our frontend & backend Dockerfiles and change the FROM to something more suitable. Make sure the application still works after the changes.
+
+Document the size after this change. If you used the alpine version the size for frontend can be less than 250MB. The backend can be below 150MB.
+
+## 3.7
+
+Do all or most of the optimizations from security to size for any other Dockerfile you have access to, in your own project or for example the ones used in previous “standalone” exercises. Please document Dockerfiles both before and after.
+
+## 3.8 Kubernetes TODO
+
+Familiarize yourself with Kubernetes terminology and draw a diagram.
+
+Similarly to the networking diagrams in part 2. You will need to draw a diagram of at least three host machines in a Kubernetes cluster. The cluster is running two applications. The applications can be anything you want. An example could be a videogame server and a blog website.
+
+The applications may utilize other machines or APIs that are not part of the cluster. At least three of the machines should be utilized. Include “your own computer” in the diagram as the one sending instructions via kubectl to deploy an application. In addition include a HTTP message coming from the internet to your Kubernetes cluster and how it may reach an application.
+
+Make sure to label the diagram so that anyone else who has completed this exercise, and read the glossary, would undestand it. The diagram should contain at least four of the following labels: Pod, Cluster, Container, Service and a Volume.
+
+Glossary. And some helpful diagrams
+
+I prefer to use draw.io but you can use whichever tool you want.
