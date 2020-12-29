@@ -686,20 +686,40 @@ For this exercise to be complete you have to provide the link to the project in 
 
 *Answer:*
 
+For this project I will clone the repository of my *Distributed Systems* project called [*CoronaZ*](https://github.com/cipz/CoronaZ/).
+
+```
+git clone https://github.com/cipz/CoronaZ/
+```
+
+Since there are various components in the project I will only build the image related to the nodes from the `coronaz-zombie` directory.
+
 Building the image and running the container:
 ```
-docker build -t ex_1_15 .
-docker run -p 80:80 ex_1_15 
+docker build -t devopswithdocker_ex_1_15:latest .
+docker run -d --name=coronaz_single_node_devopswithdocker devopswithdocker_ex_1_15:latest
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_15):*
+*Contents of Dockerfile (Actual Dockerfile in folder `coronaz-zombie` of the repository):*
 ```docker
-FROM httpd:latest
+FROM alpine:latest
 
-COPY ./public-html/ /usr/local/apache2/htdocs/
+ENV PYTHONUNBUFFERED=1
+ENV RUN_ARGS=""
 
-EXPOSE 80
+RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools kafka-python pymongo
+
+WORKDIR /app 
+
+COPY *.py ./
+COPY config.json ./
+
+CMD python3 main.py -s kafka:9094 coronaz ${RUN_ARGS} --config-file ./config.json
 ```
+
+The `README` of the project is available on the [repository's main page](https://github.com/cipz/CoronaZ/).
 
 ## 1.16 TODO
 
