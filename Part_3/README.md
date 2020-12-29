@@ -10,7 +10,7 @@ After your improvements document the image sizes again. The size difference may 
 
 *Answer:*
 
-*Contents of frontend Dockerfile (Actual Dockerfile in folder 3_1/frontend):*
+*Contents of frontend `Dockerfile` (actual `Dockerfile` in folder `3_1/frontend`):*
 ```docker
 FROM ubuntu:20.04
 
@@ -39,7 +39,7 @@ ENV API_URL=http://localhost:8000
 CMD serve -s -l 5000 dist
 ```
 
-*Contents of backend Dockerfile (Actual Dockerfile in folder 3_1/backend):*
+*Contents of backend `Dockerfile` (actual `Dockerfile` in folder `3_1/backend`):*
 ```docker
 FROM ubuntu:20.04
 
@@ -101,7 +101,7 @@ Make sure the containers start their processes as a non-root user.
 
   > TIP `man chown` may help you if you have access errors
 
-*Contents of frontend Dockerfile (Actual Dockerfile in folder 3_4/frontend):*
+*Contents of frontend Dockerfile (actual Dockerfile in folder 3_4/frontend):*
 ```docker
 FROM node:12-alpine
 
@@ -121,7 +121,7 @@ EXPOSE 5000
 CMD npm start
 ```
 
-*Contents of backend Dockerfile (Actual Dockerfile in folder 3_4/backend):*
+*Contents of backend Dockerfile (actual Dockerfile in folder 3_4/backend):*
 ```docker
 FROM node:12-alpine
 
@@ -143,7 +143,7 @@ ENV FRONT_URL=http://localhost:80
 CMD npm start
 ```
 
-*Contents of `docker-compose.yml` file (Actual `docker-compose.yml` in folder 3_4):*
+*Contents of `docker-compose.yml` file (actual `docker-compose.yml` in folder 3_4):*
 ```docker
 version: '3' 
 
