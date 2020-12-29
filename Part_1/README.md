@@ -250,7 +250,7 @@ Successfully tagged docker-clock:latest
 5
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_6):*
+*Contents of `Dockerfile` (actual `Dockerfile` in folder `1_6`):*
 ```docker
 FROM devopsdockeruh/overwrite_cmd_exercise
 ```
@@ -297,7 +297,7 @@ Searching..
 </body></html>
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_7):*
+*Contents of `Dockerfile` (actual `Dockerfile` in folder `1_7`):*
 ```docker
 FROM ubuntu:16.04
 
@@ -410,7 +410,7 @@ Running image:
 INFO: Accepting connections at http://localhost:5000
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_10):*
+*Contents of Dockerfile (actual Dockerfile in folder 1_10):*
 ``` docker
 FROM ubuntu:latest
 
@@ -533,7 +533,7 @@ Started on port 8000
 
 Even after stopping and restarting the container, the contents of `logs.txt` are kept.
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_11):*
+*Contents of Dockerfile (actual Dockerfile in folder 1_11):*
 ```docker
 FROM ubuntu:latest
 
@@ -619,7 +619,7 @@ docker build -t ex_1_13 .
 docker run -p 8080:8080 ex_1_13
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_13):*
+*Contents of Dockerfile (actual Dockerfile in folder 1_13):*
 ```docker
 FROM openjdk:8
 
@@ -654,7 +654,7 @@ docker build -t ex_1_14 .
 docker run -p 3000:3000 ex_1_14
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_14):*
+*Contents of Dockerfile (actual Dockerfile in folder 1_14):*
 ```docker
 FROM ruby:2.6.0
 
@@ -700,7 +700,7 @@ docker build -t cipz/devopswithdocker_ex_1_15:latest .
 docker run -d --name=coronaz_single_node_devopswithdocker cipz/devopswithdocker_ex_1_15:latest
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder `coronaz-zombie` of the repository):*
+*Contents of Dockerfile (actual Dockerfile in folder `coronaz-zombie` of the repository):*
 ```docker
 FROM alpine:latest
 
@@ -751,7 +751,7 @@ docker build -t ex_1_17 .
 docker run -it ex_1_17  
 ```
 
-*Contents of Dockerfile (Actual Dockerfile in folder 1_17):*
+*Contents of Dockerfile (actual Dockerfile in folder 1_17):*
 ```docker
 FROM ubuntu:latest
 
