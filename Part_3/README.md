@@ -254,6 +254,15 @@ Here are the sizes of the images:
 *Frontend:*
 ![](3_5/img/front.png)
 
+## 3.6
+
+Multi-stage builds. Lets do a multi-stage build for the frontend project since we’ve come so far with the application.
+
+Even though multi-stage builds are designed mostly for binaries in mind, we can leverage the benefits with our frontend project as having original source code with the final assets makes little sense. Build it with the instructions in README and the built assets should be in dist folder.
+
+You can still use the serve to serve the static files or try out something else.
+
+*Answer:*
 
 ## 3.7
 
@@ -272,3 +281,9 @@ Make sure to label the diagram so that anyone else who has completed this exerci
 Glossary. And some helpful diagrams
 
 I prefer to use draw.io but you can use whichever tool you want.
+
+*Answer:*
+
+The following diagram represents the system of the CoronaZ project, used in exercise 1_15, as if it was running inside a Kubernetes cluster:
+
+![](3_8/3_8.png)
