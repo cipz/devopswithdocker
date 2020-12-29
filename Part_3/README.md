@@ -290,6 +290,10 @@ EXPOSE 80
 
 Do all or most of the optimizations from security to size for any other Dockerfile you have access to, in your own project or for example the ones used in previous “standalone” exercises. Please document Dockerfiles both before and after.
 
+*Answer:*
+
+I consider the `Dockerfile` of the project I showed in exercise 1_15 as optimized.
+
 ## 3.8 Kubernetes
 
 Familiarize yourself with Kubernetes terminology and draw a diagram.
