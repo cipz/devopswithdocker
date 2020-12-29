@@ -42,7 +42,7 @@ Thu, 29 Oct 2020 19:21:05 GMT
 Thu, 29 Oct 2020 19:21:08 GMT
 ```
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_1):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_1`):
 ```docker
 version: '3' 
 
@@ -75,7 +75,7 @@ ex_2_2    |
 ex_2_2    | Listening on port 80, this means inside of the container. Use -p to map the port to a port of your local machine.
 ```
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_2):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_2`):
 ```docker
 version: '3' 
 
@@ -211,7 +211,7 @@ ex_2_3_backend     | [Exercise 2.5+] REDIS is not defined, skipping redis connec
 ex_2_3_backend     | Started on port 8000
 ex_2_3_backend     | ::ffff:172.20.0.1 - GET /ping HTTP/1.1 304 - - 5.759 ms
 ```
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_3):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_3`):
 ```docker
 version: '3' 
 
@@ -389,7 +389,7 @@ ex_2_3_backend     | Cache set successfully
 ex_2_3_backend     | Started on port 8000
 ```
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_5):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_5`):
 ```
 version: '3' 
 
@@ -442,7 +442,7 @@ Submit the `docker-compose.yml`
 
 *Answer:*
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_6):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_6`):
 
 ```docker
 version: '3' 
@@ -511,7 +511,7 @@ This exercise was created by [Sasu Mäkinen](https://github.com/sasumaki)
 
 *Answer:*
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_7):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_7`):
 
 ```
 version: '3' 
@@ -599,7 +599,7 @@ Submit the `docker-compose.yml`
 
 *Answer:*
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_8):
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_8`):
 
 ```docker
 version: '3' 
@@ -678,7 +678,9 @@ Maybe it would be simpler to back them up now that you know where they are.
 
 Submit the `docker-compose.yml`
 
-Contents of `docker-compose.yml` (Actual `docker-compose.yml` in folder 2_9:
+*Answer:*
+
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_9`):
 
 ```docker
 version: '3' 
@@ -748,3 +750,128 @@ This may need a peek into the browsers developer consoles again like back part 1
 If you had to do any changes explain what you had to change.
 
 Submit the docker-compose yml and both dockerfiles.
+
+*Answer:*
+
+Contents of `docker-compose.yml` (actual `docker-compose.yml` in folder `2_10`):
+
+```
+version: '3' 
+
+services: 
+
+  ex_3_4_frontend:  
+    image: frontend:final
+    build: ./frontend/
+    ports: 
+      - 5000:5000
+    container_name: ex_3_4_frontend
+    environment:
+      - API_URL=api
+
+  ex_3_4_backend:  
+    image: backend:final
+    build: ./backend/
+    volumes: 
+      - ${PWD}/logs.txt:/usr/local/www/backend/logs.txt
+    ports: 
+      - 8000:8000
+    environment:
+      - REDIS=ex_3_4_redis
+      - REDIS_PORT=6379
+      - DB_USERNAME=admin
+      - DB_PASSWORD=admin
+      - DB_HOST=ex_3_4_postgres
+      - FRONT_URL=localhost
+    container_name: ex_3_4_backend
+    restart: unless-stopped
+
+  ex_3_4_redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    container_name: ex_3_4_redis
+  
+  ex_3_4_postgres:
+    image: postgres
+    restart: unless-stopped
+    container_name: ex_3_4_postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  ex_3_4_nginx:
+    container_name: ex_3_4_nginx
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      - ex_3_4_frontend
+      - ex_3_4_backend
+
+volumes:
+  database:
+```
+
+Contents of the backend `Dockerfile` (actual `Dockerfile` in folder `2_10/backend`):
+
+```docker
+FROM ubuntu:latest
+
+RUN apt-get update -y && apt-get install git curl -y
+
+# Installation instructions from https://github.com/docker-hy/backend-example-docker
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get update -y && apt install -y nodejs
+
+# Check install
+RUN node -v && npm -v
+
+RUN git clone https://github.com/docker-hy/backend-example-docker
+RUN mv backend-example-docker /usr/local/www
+
+WORKDIR /usr/local/www
+
+RUN npm install
+
+EXPOSE 8000
+ENV FRONT_URL=http://localhost:80
+
+CMD npm start
+```
+
+Contents of the frontend `Dockerfile` (actual `Dockerfile` in folder `2_10/frontend`):
+
+```docker
+FROM ubuntu:latest
+
+RUN apt-get update -y && apt-get install git curl -y
+
+# Installation instructions from https://github.com/docker-hy/frontend-example-docker
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
+RUN apt-get update -y && apt install -y nodejs
+
+# Check install
+RUN node -v && npm -v
+
+RUN git clone https://github.com/docker-hy/frontend-example-docker
+RUN mv frontend-example-docker /usr/local/www
+
+WORKDIR /usr/local/www
+
+RUN npm install
+RUN npm run build
+RUN npm install -g serve
+
+EXPOSE 5000
+
+# For ex_1_12
+# ENV API_URL=http://localhost:8000
+RUN npm run build
+
+CMD serve -s -l 5000 dist
+```
