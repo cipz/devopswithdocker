@@ -64,7 +64,19 @@ EXPOSE 8000
 CMD npm start
 ```
 
-## 3.2 A deployment pipeline to heroku TODO
+Here is the comparison in size for the images before and after:
+
+*Backend:*
+
+![](3_1/img/back_before.png)
+![](3_1/img/back_after.png)
+
+*Frontend:*
+
+![](3_1/img/front_before.png)
+![](3_1/img/front_after.png)
+
+## 3.2 A deployment pipeline to heroku *skipped*
 
 Let’s create our first deployment pipeline!
 
@@ -85,11 +97,26 @@ Watchtower uses volume to docker.sock socket to access Docker daemon of the host
 
 Create a project that downloads a repository from github, builds a Dockerfile located in the root and then publishes it into Docker Hub.
 
-You can use any programming language / technology for the project implementation. A simple bash script is viable
+You can use any programming language / technology for the project implementation. A simple bash script is viable.
 
 Then create a Dockerfile for it so that it can be run inside a container.
 
 Make sure that it can build at least some of the example projects.
+
+*Answer:*
+
+The following script downloads, builds and pushes the image used in exercise 1_15:
+```
+#!/bin/bash
+
+git clone https://github.com/cipz/CoronaZ/
+
+docker build -t cipz/devopswithdocker_ex_1_15:latest CoronaZ/coronaz-zombie/.
+
+docker login
+
+docker push cipz/devopswithdocker_ex_1_15:latest
+```
 
 ## 3.4
 
@@ -101,7 +128,9 @@ Make sure the containers start their processes as a non-root user.
 
   > TIP `man chown` may help you if you have access errors
 
-*Contents of frontend Dockerfile (actual Dockerfile in folder 3_4/frontend):*
+*Answer:*
+
+*Contents of frontend `Dockerfile` (actual `Dockerfile` in folder `3_4/frontend`):*
 ```docker
 FROM node:12-alpine
 
@@ -121,7 +150,7 @@ EXPOSE 5000
 CMD npm start
 ```
 
-*Contents of backend Dockerfile (actual Dockerfile in folder 3_4/backend):*
+*Contents of backend `Dockerfile` (actual `Dockerfile` in folder `3_4/backend`):*
 ```docker
 FROM node:12-alpine
 
@@ -213,6 +242,18 @@ Rather than going to `FROM alpine` or scratch, lets go look into docker-node and
 Return back to our frontend & backend Dockerfiles and change the FROM to something more suitable. Make sure the application still works after the changes.
 
 Document the size after this change. If you used the alpine version the size for frontend can be less than 250MB. The backend can be below 150MB.
+
+*Answer:*
+
+For this exercise I used the same images of exercise 3_4.
+Here are the sizes of the images:
+
+*Backend:*
+![](3_5/img/back.png)
+
+*Frontend:*
+![](3_5/img/front.png)
+
 
 ## 3.7
 
