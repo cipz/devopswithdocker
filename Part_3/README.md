@@ -264,11 +264,33 @@ You can still use the serve to serve the static files or try out something else.
 
 *Answer:*
 
+*Contents of the `Dockerfile` (actual `Dockerfile` in folder 3_6):*
+
+```docker
+FROM node:12-alpine3.12 as build-stage
+
+WORKDIR /app
+
+ENV API_URL=http://localhost:8000
+
+RUN apk add --no-cache git && \
+    git clone https://github.com/docker-hy/frontend-example-docker.git . && \
+    npm install && \
+    apk del git && \
+    npm run build
+
+FROM nginx:alpine
+
+COPY --from=build-stage /app/dist/ /usr/share/nginx/html/
+
+EXPOSE 80
+```
+
 ## 3.7
 
 Do all or most of the optimizations from security to size for any other Dockerfile you have access to, in your own project or for example the ones used in previous “standalone” exercises. Please document Dockerfiles both before and after.
 
-## 3.8 Kubernetes TODO
+## 3.8 Kubernetes
 
 Familiarize yourself with Kubernetes terminology and draw a diagram.
 
