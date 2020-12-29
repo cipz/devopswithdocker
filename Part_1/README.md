@@ -696,8 +696,8 @@ Since there are various components in the project I will only build the image re
 
 Building the image and running the container:
 ```
-docker build -t devopswithdocker_ex_1_15:latest .
-docker run -d --name=coronaz_single_node_devopswithdocker devopswithdocker_ex_1_15:latest
+docker build -t cipz/devopswithdocker_ex_1_15:latest .
+docker run -d --name=coronaz_single_node_devopswithdocker cipz/devopswithdocker_ex_1_15:latest
 ```
 
 *Contents of Dockerfile (Actual Dockerfile in folder `coronaz-zombie` of the repository):*
@@ -720,6 +720,8 @@ CMD python3 main.py -s kafka:9094 coronaz ${RUN_ARGS} --config-file ./config.jso
 ```
 
 The `README` of the project is available on the [repository's main page](https://github.com/cipz/CoronaZ/).
+
+The image can be found on Docker Hub at the following [link](https://hub.docker.com/r/cipz/devopswithdocker_ex_1_15).
 
 ## 1.16 TODO
 
