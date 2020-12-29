@@ -723,7 +723,7 @@ The `README` of the project is available on the [repository's main page](https:/
 
 The image can be found on Docker Hub at the following [link](https://hub.docker.com/r/cipz/devopswithdocker_ex_1_15).
 
-## 1.16 TODO
+## 1.16 *Skipped*
 
 Pushing to heroku happens in a similar way. A project has already been prepared at `devopsdockeruh/heroku-example` so lets pull that first. Note that the image of the project is quite large.
 
